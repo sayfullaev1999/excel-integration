@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 
 
@@ -31,6 +33,7 @@ class Organization(models.Model):
         verbose_name='Адрес', max_length=255,
         null=True, blank=True
     )
+    fraud_weight = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('client', 'name')
@@ -63,6 +66,13 @@ class Bill(models.Model):
         unique_together = ('organization', 'number')
         verbose_name = 'Счета организации клиента'
         verbose_name_plural = 'Счета организации клиента'
+
+    def save(self, *args, **kwargs):
+        if self.pk is None and self.fraud_score >= Decimal('0.9'):
+            organization = self.organization
+            organization.fraud_weight += 1
+            organization.save(update_fields=['fraud_weight'])
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.organization} - {self.number}'
