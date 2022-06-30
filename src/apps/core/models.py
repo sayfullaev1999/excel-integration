@@ -28,7 +28,8 @@ class Organization(models.Model):
         verbose_name='Имя', max_length=255
     )
     address = models.CharField(
-        verbose_name='Адрес', max_length=255
+        verbose_name='Адрес', max_length=255,
+        null=True, blank=True
     )
 
     class Meta:
