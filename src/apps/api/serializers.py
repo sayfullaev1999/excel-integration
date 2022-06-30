@@ -1,6 +1,22 @@
 from rest_framework import serializers
 
-from apps.core.models import Client
+from apps.core.models import (
+    Bill,
+    Client,
+    Organization,
+)
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
 
 
 class ClientReadOnlySerializer(serializers.ModelSerializer):
@@ -10,3 +26,12 @@ class ClientReadOnlySerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ('name', 'organizations_count', 'incoming')
+
+
+class BillReadOnlySerializer(serializers.ModelSerializer):
+    client = ClientSerializer()
+    organization = OrganizationSerializer()
+
+    class Meta:
+        model = Bill
+        fields = '__all__'
