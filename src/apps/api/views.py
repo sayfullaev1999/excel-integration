@@ -1,6 +1,15 @@
-from django.db.models import Count, Sum
+from decimal import Decimal
+
+from django.db.models import (
+    Count,
+    Sum,
+)
 from django.db.models.functions import Coalesce
-from rest_framework import viewsets, mixins, status
+from rest_framework import (
+    viewsets,
+    mixins,
+    status,
+)
 from rest_framework import parsers
 from rest_framework.response import Response
 
@@ -22,8 +31,8 @@ class ClientReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return super().get_queryset().annotate(
-            organizations_count=Count('organizations'),
-            incoming=Coalesce(Sum('bills__sum'), 0)
+            organizations_count=Count('organizations', distinct=True),
+            incoming=Coalesce(Sum('bills__sum', distinct=True), Decimal(0))
         )
 
 

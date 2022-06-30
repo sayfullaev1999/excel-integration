@@ -28,7 +28,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class ClientReadOnlySerializer(serializers.ModelSerializer):
     organizations_count = serializers.IntegerField(help_text='Количество организаций')
-    incoming = serializers.IntegerField(help_text='Приход')
+    incoming = serializers.DecimalField(help_text='Приход', max_digits=30, decimal_places=2)
 
     class Meta:
         model = Client

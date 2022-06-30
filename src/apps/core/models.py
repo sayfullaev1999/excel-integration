@@ -52,7 +52,7 @@ class Bill(models.Model):
         verbose_name='Организация', to=Organization, on_delete=models.CASCADE, related_name='bills'
     )
     number = models.IntegerField(verbose_name='№')
-    sum = models.IntegerField(verbose_name='Сумма')
+    sum = models.DecimalField(verbose_name='Сумма', max_digits=15, decimal_places=2)
     date = models.DateField(verbose_name='Дата')
     service = models.CharField(verbose_name='Сервис', max_length=255)
     fraud_score = models.DecimalField(
